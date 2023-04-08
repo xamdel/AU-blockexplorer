@@ -3,6 +3,7 @@ import { Network, Alchemy } from 'alchemy-sdk';
 import styles from '../styles/Home.module.css';
 import { BlockData } from '../types/BlockData';
 import Block from '../components/Block';
+import { SquareLoader } from 'react-spinners';
 
 const settings = {
   apiKey: process.env.ALCHEMY_API_KEY
@@ -11,7 +12,8 @@ const alchemy = new Alchemy(settings);
 
 export default function Home() {
   const [blocks, setBlocks] = useState<BlockData[]>([]);
-
+  const [loading, setLoading] = useState<boolean>(true);
+ 
   // delay function because setTimeout is wonky inside async blocks
   function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -40,6 +42,7 @@ export default function Home() {
       console.log({ fetchedBlocks });
       // return fetchedBlocks;
       setBlocks(fetchedBlocks);
+      setLoading(false);
     }
     getInitialBlocks();
 
@@ -67,16 +70,22 @@ export default function Home() {
     <div className={styles.container}>
       <div className={styles.top} />
       <div className={styles.middle}>
-        {blocks.map((blockData, i) => (
-          <div
-            className={styles.blockPosition}
-            key={`${blockData.number}-${i}`}
-            id={`${i}`}
-          >
-            <Block blockData={blockData} />
-          </div>
-        ))}
-
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <h3>Loading blocks...</h3>
+          <SquareLoader/>
+        </div>
+        ) : (
+          blocks.map((blockData, i) => (
+            <div
+              className={`${styles.blockPosition} ${i === 0 ? styles.firstBlock : ''}`}
+              key={`${blockData.number}-${i}`}
+              id={`${i}`}
+            >
+              <Block blockData={blockData} />
+            </div>
+          ))
+        )}
       </div>
       <div className={styles.bottom}>
       </div>

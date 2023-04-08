@@ -7,7 +7,7 @@
 .top,
 .bottom {
   flex: 1;
-  background-color: #f0f0f0;
+  background-color: #f7fbfc;
 }
 
 .bottom {
@@ -22,7 +22,18 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  background-color: #f0f0f0;
+  background-color: #f7fbfc;
+}
+
+.loadingContainer {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  text-align: center;
+}
+
+.loadingContainer h3 {
+  margin-bottom: 1rem;
 }
 
 .blockPosition {
@@ -63,9 +74,42 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #fefefe;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: black;
+  font-size:  xx-small;
+  word-wrap: break-word;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.blockHeader, .blockBody, .blockFooter {
+  padding: 0.7rem;
+}
+
+.blockHeader {
+  border: 3px solid #769fcd;
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: #769fcd;
+  overflow:hidden;
+  color: #fefefe;
+}
+
+.blockHeader h3 {
+  margin-bottom: 0.5rem;
+}
+
+.blockBody {
+  font-size: x-small;
+}
+
+.transactions {
+  font-size: medium;
+  margin: 2rem 0 2rem 0;
+}
+
+.blockFooter {
+  border-top: 1px solid black;
 }
