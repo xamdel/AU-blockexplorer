@@ -1,0 +1,81 @@
+import { useState, useEffect } from 'react';
+import { Network, Alchemy } from 'alchemy-sdk';
+import styles from '../styles/Home.module.css';
+import { BlockData } from '../types/BlockData';
+import Block from '../components/Block';
+import * as ReactDOMClient from 'react-dom/client';
+import { resolve } from 'path';
+
+const settings = {
+  apiKey: process.env.ALCHEMY_API_KEY
+};
+const alchemy = new Alchemy(settings);
+
+export default function Home() {
+  const [blocks, setBlocks] = useState<BlockData[]>([]);
+  // delay function because setTimeout is wonky inside async blocks
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // On initial render, load 5 most recently mined blocks
+  useEffect(() => {
+    async function getInitialBlocks() {
+      // Fetch most recent block number
+      const latestBlock = await alchemy.core.getBlockNumber();
+      console.log({ latestBlock });
+
+      // Calculate 4 previous blocks and fetch data for all 5 from Alchemy
+      const blockNumbers = Array.from({ length: 5 }, (_, i) => latestBlock - i).reverse();
+      console.log({ blockNumbers });
+
+      const fetchedBlocks = [];
+      for (const blockNumber of blockNumbers) {
+        const blockData = await alchemy.core.getBlock(blockNumber);
+        fetchedBlocks.push(blockData);
+        await delay(350);
+      }
+
+      console.log({fetchedBlocks});
+      // return fetchedBlocks;
+      setBlocks(fetchedBlocks);
+    }
+
+    // function populateInitialBlocks(blockDataList: BlockData[]) {
+    //   const blocks = blockDataList.map((blockData) => (
+    //     <Block key={blockData.number} blockData={blockData} />
+    //   ));
+
+    //   for (let i = 0; i < blocks.length; i++) {
+    //     const blockPosition = document.getElementById(`${i + 1}`);
+    //     ReactDOM.render(blocks[i], blockPosition);
+    //   }
+    // }
+
+    // getInitialBlocks().then((fetchedBlocks) => {
+    //   populateInitialBlocks(fetchedBlocks);
+    // })
+    getInitialBlocks();
+
+  }, [])
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.top} />
+      <div className={styles.middle}>
+      {blocks.map((blockData, i) => (
+        <div className={styles.blockPosition} key={i} id={`${i}`}>
+          <Block key={blockData.number} blockData={blockData} />
+          </div>
+        ))}
+        {/* <div className={styles.blockPosition} id='1'></div>
+        <div className={styles.blockPosition} id='2'></div>
+        <div className={styles.blockPosition} id='3'></div>
+        <div className={styles.blockPosition} id='4'></div>
+        <div className={styles.blockPosition} id='5'></div> */}
+      </div>
+      <div className={styles.bottom}>
+      </div>
+    </div>
+  );
+};
