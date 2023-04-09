@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7fbfc;
+}
+
+.txTable {
+    color: black;
+    width: 100%;
+  max-width: 1200px;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1rem;
+}
+
+.txTable th {
+    background-color: #769FCD;
+  color: white;
+  padding: 10px 20px;
+  border-bottom: 2px solid black;
+  font-size: x-large;
+}
+
+.txTable tr {
+    border: 1px solid black;
+}
+
+.txTable td {
+    padding: 1rem 2rem;
+}
+
+.txTable td:nth-child(1) {
+    background-color: #D6E6F2;
+}

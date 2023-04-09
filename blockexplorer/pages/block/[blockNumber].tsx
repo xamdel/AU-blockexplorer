@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getBlock } from "../api/alchemy";
 import { BlockData } from "../../types/BlockData";
 import styles from '../../styles/BlockPage.module.css';
+import Link from "next/link";
 
 export default function BlockPage() {
     const router = useRouter();
@@ -45,7 +46,11 @@ export default function BlockPage() {
             <div className={styles.main}>
                 <h2>Transactions</h2>
                 {blockData.transactions.slice(0, transactionsToShow).map((tx, index) => (
-                    <p key={index}>{tx}</p>
+                    <p key={index}>
+                        <Link href={`/transaction/${tx}`}>
+                            {tx}
+                        </Link>
+                    </p>
                 ))}
                 <button className={styles.button} onClick={loadMoreTransactions}>Load more transactions</button>
             </div>

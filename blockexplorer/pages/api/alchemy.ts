@@ -16,3 +16,8 @@ export async function getBlock(blockNumber: number): Promise<BlockData> {
   const blockData = await alchemy.core.getBlock(blockNumber);
   return blockData as BlockData;
 }
+
+export async function getTransaction(txHash: string) {
+  const txData = await alchemy.transact.getTransaction(txHash);
+  return txData;
+}

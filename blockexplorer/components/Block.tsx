@@ -16,7 +16,7 @@ export default function Block({ blockData }: BlockProps) {
     const dateProposed = (new Date (blockData.timestamp * 1000)).toString()
 
     return (
-        <Link href={`/blocks/${number}`}>
+        <Link href={`/block/${number}`}>
                 <div id={`$number`} className={styles.block}>
                     <div className={styles.blockHeader}>
                         <h3>Block {number}</h3>
