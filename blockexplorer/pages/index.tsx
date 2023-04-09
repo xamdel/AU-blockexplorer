@@ -3,6 +3,7 @@ import { getBlockNumber, getBlock } from './api/alchemy';
 import { Alchemy } from 'alchemy-sdk';
 import styles from '../styles/Home.module.css';
 import { BlockData } from '../types/BlockData';
+import delay from '../utils/delay';
 import Block from '../components/Block';
 import { SquareLoader } from 'react-spinners';
 
@@ -14,11 +15,6 @@ const alchemy = new Alchemy(settings);
 export default function Home() {
   const [blocks, setBlocks] = useState<BlockData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
- 
-  // delay function because setTimeout is wonky inside async blocks
-  function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   // On initial render, load 6 most recently mined blocks
   useEffect(() => {

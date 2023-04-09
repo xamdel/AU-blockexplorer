@@ -39,7 +39,11 @@ export default function TransactionPage() {
                     </tr>
                     <tr>
                         <td><b>From</b></td>
-                        <td>{transaction.from}</td>
+                        <td>
+                            <Link href={`/address/${transaction.from}`}>
+                                {transaction.from}
+                            </Link>
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Block Number</b></td>

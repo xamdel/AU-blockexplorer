@@ -21,3 +21,18 @@ export async function getTransaction(txHash: string) {
   const txData = await alchemy.transact.getTransaction(txHash);
   return txData;
 }
+
+export async function getEtherBalance(address: string) {
+  const ethBalance = await alchemy.core.getBalance(address);
+  return ethBalance;
+}
+
+export async function getTokenBalances(address: string) {
+  const tokenBalances = await alchemy.core.getTokenBalances(address);
+  return tokenBalances;
+}
+
+export async function getTokenMetadata(address: string) {
+  const metadata = await alchemy.core.getTokenMetadata(address);
+  return metadata;
+}

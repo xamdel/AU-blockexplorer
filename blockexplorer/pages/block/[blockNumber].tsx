@@ -39,7 +39,11 @@ export default function BlockPage() {
                 <h1>Block {blockData.number}</h1>
                 <h3>{blockData.hash}</h3>
                 <h3>Gas used: {blockData.gasUsed.toString()}</h3>
-                <p>Proposed by {blockData.miner}</p>
+                <p>Proposed by
+                    <Link href={`/address/${blockData.miner}`}>
+                        {blockData.miner}
+                    </Link>
+                </p>
                 <p>at {(new Date(blockData.timestamp * 1000)).toString()}</p>
                 <p>Extra data: {blockData.extraData}</p>
             </div>
