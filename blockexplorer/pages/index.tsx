@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Network, Alchemy } from 'alchemy-sdk';
+import { getBlockNumber, getBlock } from './api/alchemy';
+import { Alchemy } from 'alchemy-sdk';
 import styles from '../styles/Home.module.css';
 import { BlockData } from '../types/BlockData';
 import Block from '../components/Block';
@@ -21,45 +22,39 @@ export default function Home() {
 
   // On initial render, load 6 most recently mined blocks
   useEffect(() => {
-    console.log('Home component mounted');
 
     async function getInitialBlocks() {
       // Fetch most recent block number
-      const latestBlock = await alchemy.core.getBlockNumber();
-      console.log({ latestBlock });
+      const latestBlock = await getBlockNumber();
 
       // Calculate 5 previous blocks and fetch data for all 6 from Alchemy
       const blockNumbers = Array.from({ length: 6 }, (_, i) => latestBlock - i).reverse();
-      console.log({ blockNumbers });
 
       const fetchedBlocks = [];
       for (const blockNumber of blockNumbers) {
-        const blockData = await alchemy.core.getBlock(blockNumber);
+        const blockData = await getBlock(blockNumber);
         fetchedBlocks.push(blockData);
         await delay(250);
       }
 
-      console.log({ fetchedBlocks });
       // return fetchedBlocks;
       setBlocks(fetchedBlocks);
       setLoading(false);
     }
     getInitialBlocks();
 
-    // Subscribe to websocket to get newly mined blocks, animate blocks, update our state variable array
     // Subscribe to websocket to get newly mined blocks, update our state variable array
     const subscription = alchemy.ws.on("block", async (blockNumber) => {
-      const blockData = await alchemy.core.getBlock(blockNumber);
+      const blockData = await getBlock(blockNumber);
 
       setBlocks((prevBlocks) => [...prevBlocks.slice(1), blockData]);
 
     });
 
-
     // Clean up the websocket connection
     return () => {
       if (subscription) {
-        alchemy.ws.off;
+        alchemy.ws.removeAllListeners;
       }
     }
   }, [])
@@ -72,8 +67,8 @@ export default function Home() {
       <div className={styles.middle}>
       {loading ? (
         <div className={styles.loadingContainer}>
-          <h3>Loading blocks...</h3>
-          <SquareLoader/>
+          <h2 className={styles.loadingText}>Loading blocks...</h2>
+          <SquareLoader color='#769fcd'/>
         </div>
         ) : (
           blocks.map((blockData, i) => (
